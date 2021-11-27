@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const setHeader = (token) => {
+        return {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        };
+      };
+      async function getDetails() {
+        var token = window.localStorage.getItem("token");
+
+        try {
+          const auth = await axios.get("./auth", setHeader(token));
+          const result = await axios.get(
+            "https://api.data.gov.sg/v1/transport/carpark-availability",
+            setHeader(token)
+          );
+          const datas = result.data.items[0].carpark_data;
+          console.log(datas)
+          for (var data of datas) {
+            var container = document.getElementById("container");
+            var card = `
+                            <div class="card-body">
+                                <h5 class="card-title">Carpark Number: ${data.carpark_number}</h5>
+                                
+                            `;
+            var body = `<div class="card-text mb-3">`
+                var count = 0
+            for (infos of data.carpark_info){
+                for (info in infos){
+                    body += `${info} : ${infos[info]} <br>`
+                }
+                count += 1;
+                if (count < data.carpark_info.length){
+                    body += "<hr>"
+                }
+                
+            }
+            
+            body += "</div>"
+            card += body;
+            card += `<div class="card-footer">Date Updated: ${data.update_datetime}</div>`
+            var div = document.createElement("div");
+            div.className = "card mb-3";
+            div.style.width = "100%";
+            div.innerHTML = card;
+            container.appendChild(div);
+          }
+        } catch (error) {
+          window.location.assign("./error.html");
+        }
+      }
+      window.onload = function () {
+        getDetails();
+      };
+    </script>
+    <div class="container mx-auto w-50" id="container">
+      <h1 class="text-center mt-3 mb-5">Carpark Details</h1>
+    </div>
+  </body>
+</html>

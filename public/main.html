@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      const setHeader = (token) => {
+        return {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        };
+      };
+      async function getDetails() {
+        var token = window.localStorage.getItem("token");
+        try {
+            const auth = await axios.get("./auth", setHeader(token));
+          const result = await axios.get("./find", setHeader(token));
+          var datas = result.data[0];
+          console.log(datas);
+          for (data of datas) {
+            var container = document.getElementById("container");
+            var card = `
+                            <div class="card-body">
+                                <h5 class="card-title">${data.firstname} ${data.lastname}</h5>
+                                <p class="card-text">Email : ${data.email}</p>
+                                <p class="card-text">Phone : ${data.phone}</p>
+                            </div>
+                            `;
+            var div = document.createElement("div");
+            div.className = "card mb-3";
+            div.style.width = "100%";
+            div.innerHTML = card;
+            container.appendChild(div);
+          }
+        } catch (error) {
+            
+            window.location.assign("./error.html")
+        }
+      }
+      window.onload = function () {
+        getDetails();
+      };
+    </script>
+    <div class="container mx-auto w-50" id="container">
+        <h1 class="text-center mt-3 mb-5">Member Details</h1>
+    </div>
+    
+  </body>
+</html>

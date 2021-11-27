@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <title>Document</title>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <script>
+        const setHeader = (token) => {
+        return {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Bearer " + token,
+          },
+        };
+      };
+      async function register() {
+        var inputs = document.getElementsByTagName("input");
+        var first = inputs[0].value;
+        var last = inputs[1].value;
+        var phone = inputs[2].value;
+        var email = inputs[3].value;
+        var password = inputs[4].value;
+        var re_password = inputs[5].value;
+        var params = { email, password, phone, first, last, re_password };
+        try {
+            const result = await axios.post('./register', params, setHeader());
+            
+            window.localStorage.setItem("token", result.data.token);
+            window.location.assign("./main.html")
+        } catch (error) {
+            console.log(error)
+        }
+        
+      }
+    </script>
+    <div class="container w-50 mt-5">
+      <form action="./register" method="POST">
+        <h1 class="text-center">Registration</h1>
+        <label class="form-label">First Name</label>
+        <input class="form-control mb-2" name="first" type="text" required />
+        <label class="form-label">Last Name</label>
+        <input class="form-control mb-2" name="last" type="text" required />
+        <label class="form-label">Phone</label>
+        <input class="form-control mb-2"  name="phone" type="number" />
+        <label class="form-label">Email</label>
+        <input class="form-control mb-2" name="username" type="text" required />
+        <label class="form-label">Password</label>
+        <input class="form-control mb-2" name="password" type="password" required />
+        <label class="form-label">Re-enter Password</label>
+        <input class="form-control mb-2"  name="re_password" type="password" required />
+        Have an account? <a href="./login.html">Login here</a> <br>
+        <button class="btn btn-primary mt-1" type="button" onclick="register()">Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
