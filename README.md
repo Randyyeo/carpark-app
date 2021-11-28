@@ -7,7 +7,7 @@ of how a authentication app should perform
 Clone our repository or download the zip file.
 
 ```bash
-https://github.com/Randyyeo/carpark-app.git
+git clone https://github.com/Randyyeo/carpark-app.git
 ```
 
 Go to the folder of the files in your local and use the package manager npm to install the relevant dependencies.
