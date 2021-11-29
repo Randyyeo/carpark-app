@@ -19,7 +19,7 @@ npm install
 
 ## Setting up the database
 
-Run your mysql server on your local and update the credentials in the database.js folder with your own mysql credentials.
+Run your mysql server on your local and update the credentials in the database.js file with your own mysql username and password.
 After that, run the createDB.sql file in your local mysql server and your database is set up.
 
 
