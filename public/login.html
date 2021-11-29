@@ -27,7 +27,7 @@
             const result = await axios.post('./login', params, setHeader());
             
             window.localStorage.setItem("token", result.data.token);
-            window.location.assign("./main.html")
+            window.location.assign("./carpark.html")
         } catch (error) {
             console.log(error)
         }

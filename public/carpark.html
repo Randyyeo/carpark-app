@@ -9,6 +9,44 @@
     <title>Document</title>
   </head>
   <body>
+    <style>
+      ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333333;
+      }
+      
+      li {
+        float: left;
+      }
+      
+      li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 16px;
+        text-decoration: none;
+      }
+      
+      li a:hover {
+        background-color: #111111;
+      }
+      .h {
+        text-align: center;
+        margin: 5px;
+      }
+
+      .buttons-bar {
+        margin: auto;
+        margin-bottom: 1cm;
+      }
+
+      .navigation {
+        cursor: pointer;
+      }
+      </style>
     <script>
       const setHeader = (token) => {
         return {
@@ -18,7 +56,17 @@
           },
         };
       };
-      async function getDetails() {
+      var pages = 1
+      function next(index){
+        pages = index
+        
+        getDetails(pages);
+      }
+      function addone(){
+        pages += 1
+        getDetails(pages);
+      }
+      async function getDetails(page) {
         var token = window.localStorage.getItem("token");
 
         try {
@@ -27,10 +75,19 @@
             "https://api.data.gov.sg/v1/transport/carpark-availability",
             setHeader(token)
           );
-          const datas = result.data.items[0].carpark_data;
-          console.log(datas)
+
+          var datas = result.data.items[0].carpark_data;
+          var total = datas.length;
+          var pages = total / 25;
+          datas = datas.slice(page * 25 - 25,page * 25)
+          var details = document.getElementById("details");
+          if (details){
+            details.remove();
+          }
+          var details = document.createElement("div")
+          details.id = "details"
           for (var data of datas) {
-            var container = document.getElementById("container");
+            
             var card = `
                             <div class="card-body">
                                 <h5 class="card-title">Carpark Number: ${data.carpark_number}</h5>
@@ -56,18 +113,67 @@
             div.className = "card mb-3";
             div.style.width = "100%";
             div.innerHTML = card;
-            container.appendChild(div);
+            details.appendChild(div);
+            
+            
           }
+          var div = document.createElement("div");
+          div.className = "buttons-bar h";
+          
+          var html = ""
+          for (var i = 1; i <= pages; i++){
+            if (page == i){
+              
+                html += `<button
+              type="button"
+              class="btn-primary me-1 mb-1 navigation"
+              id="${i}"
+              
+              onclick="next(${i})"
+            >
+              ${i}
+            </button>`
+            } else {
+              html += `<button
+              type="button"
+              class="btn-secondary me-1 mb-1 navigation"
+              id="${i}"
+              
+              onclick="next(${i})"
+            >
+              ${i}
+            </button>`
+            }
+            
+          }
+          html += `<button
+          type="button"
+          class="btn-secondary mr-1 navigation"
+          onclick="addone()"
+        >></button>`
+          div.innerHTML = html
+          details.appendChild(div)
+          var container = document.getElementById("container");
+          container.appendChild(details)
         } catch (error) {
-          window.location.assign("./error.html");
+          /* window.location.assign("./error.html"); */
+          console.log(error)
         }
       }
       window.onload = function () {
-        getDetails();
+        getDetails(1);
       };
     </script>
+    <nav>
+      <ul >
+        <li><a href="./carpark.html">Carpark</a></li>
+        <li><a href="./main.html">Members</a></li>
+      </ul>
+    </nav>
     <div class="container mx-auto w-50" id="container">
       <h1 class="text-center mt-3 mb-5">Carpark Details</h1>
+      <div id="details"></div>
+      
     </div>
   </body>
 </html>
