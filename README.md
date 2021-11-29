@@ -17,6 +17,12 @@ cd carpark-app
 npm install 
 ```
 
+## Setting up the database
+
+Run your mysql server on your local and update the credentials in the database.js folder with your own mysql credentials.
+After that, run the createDB.sql file in your local mysql server and your database is set up.
+
+
 ## Running the Application 
 
 ```bash
