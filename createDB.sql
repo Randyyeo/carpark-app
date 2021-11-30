@@ -12,10 +12,5 @@ create table accounts (
     
 );
 
-insert into accounts (email, password, firstname, lastname,  phone) values 
-    ('user1', 'password1', 'Barack', 'Obama',  87654321),
-    ('user2', 'password2', 'Donald', 'Trump', 12345678);
-
-
 
 
