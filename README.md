@@ -1,4 +1,4 @@
-A simple **authentication app** created with Express.js and bootstrap. This project aims to show my understanding of what the backend engineering is and the simple practices
+A simple **authentication app** created with Express.js, JSONWebToken and bcryptjs. This project aims to show my understanding of what backend engineering is and the simple practices
 of how a authentication app should perform
 
 
